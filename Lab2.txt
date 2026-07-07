@@ -1,0 +1,406 @@
+1.
+Two Sum Trouble
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class TST{
+    public static void main (String[] args)throws IOException {
+        InputStreamReader inp= new InputStreamReader (System.in);
+        BufferedReader bfr= new BufferedReader (inp);
+
+        String[] given= bfr.readLine().split(" ");
+        int size= Integer.parseInt(given[0]);
+        int key= Integer.parseInt(given[1]);
+
+        String[] arr1= bfr.readLine().split(" ");
+        int[] arr2= new int[size];
+        for (int i=0; i<size; i++){
+            arr2[i]= Integer.parseInt(arr1[i]);
+        }
+        
+        int l_point= 0;
+        int r_point= size-1; 
+        while (l_point<r_point){
+            if (arr2[l_point]+arr2[r_point]==key){
+                System.out.println((l_point+1)+" "+(r_point+1));
+                return;
+            }
+            else if (arr2[l_point]+arr2[r_point]>key){
+                r_point-- ;
+            }
+            else {
+                l_point++;
+            }
+        }
+        System.out.println("-1");
+    }
+}
+
+
+2.
+Two Sum Revisited
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class TSR {
+    public static void main (String[] args) throws IOException {
+        InputStreamReader inp= new InputStreamReader(System.in);
+        BufferedReader bfr= new BufferedReader(inp);
+        String[] given= bfr.readLine().split(" ");
+        int size1= Integer.parseInt(given[0]);
+        int size2= Integer.parseInt(given[1]);
+        int key= Integer.parseInt(given[2]);
+
+        String[] a1= bfr.readLine().split(" ");
+        int[] arr1= new int[size1];
+        for (int i=0; i<size1; i++){
+            arr1[i]= Integer.parseInt(a1[i]);
+        }
+
+        String[] a2= bfr.readLine().split(" ");
+        int[] arr2= new int[size2];
+        for (int i=0; i<size2; i++){
+            arr2[i]= Integer.parseInt(a2[i]);
+        }
+        
+        int diff= Integer.MAX_VALUE;
+        int pos1=0; 
+        int pos2=0;
+        int point1=0;
+        int point2= size2-1;
+
+        while (point1<size1 && point2>=0){
+            int temp= Math.abs(arr1[point1]+arr2[point2]-key);
+                if (temp<diff){
+                    diff= temp;
+                    pos1= point1;
+                    pos2= point2;
+                }
+                if(Math.abs(arr1[point1]+arr2[point2]-key)==0){
+                    break;
+                }
+                if (arr1[point1]+arr2[point2]<key){
+                    point1++ ;
+                }
+                else {
+                    point2-- ;
+                }
+            }
+            System.out.println((pos1+1)+" "+(pos2+1));
+        }
+    }
+
+
+3.
+Beautiful Sorted List
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+
+public class SortedList {
+    public static void main (String[] args) throws IOException{
+        InputStreamReader inp= new InputStreamReader(System.in);
+        BufferedReader bfr= new BufferedReader(inp);
+        PrintWriter pw= new PrintWriter(System.out);
+        
+        int size1= Integer.parseInt(bfr.readLine());
+        StringTokenizer st= new StringTokenizer(bfr.readLine());
+        int[] arr1= new int[size1];
+        for (int i=0; i<size1; i++){
+            arr1[i]= Integer.parseInt(st.nextToken());
+        }
+
+        int size2= Integer.parseInt(bfr.readLine());
+        int[] arr2= new int[size2];
+        st= new StringTokenizer(bfr.readLine());
+        for (int i=0; i<size2; i++){
+            arr2[i]= Integer.parseInt(st.nextToken());
+        }
+
+        int point1=0;
+        int point2=0;
+        while (point1<size1 && point2<size2){
+            if (arr1[point1]<arr2[point2]){
+                pw.print(arr1[point1]+" ");
+                point1++ ;
+            }
+            else {
+                pw.print(arr2[point2]+" ");
+                point2++ ;
+            }
+        }
+        while (point1<size1){
+            pw.print(arr1[point1]+" ");
+            point1++ ;
+        }
+        while (point2<size2) {
+            pw.print(arr2[point2]+" ");
+            point2++ ;
+        }
+        pw.flush();
+        pw.close();
+    }
+}
+
+
+4.
+Longest Sub Array Sum
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+
+public class LongestSubA {
+    public static void main (String[] args) throws IOException{
+        InputStreamReader inp= new InputStreamReader(System.in);
+        BufferedReader bfr= new BufferedReader(inp);
+        PrintWriter pw= new PrintWriter(System.out);
+        StringTokenizer st= new StringTokenizer(bfr.readLine());
+        int size= Integer.parseInt(st.nextToken());
+        int key= Integer.parseInt(st.nextToken());
+        int[] arr= new int [size];
+        st= new StringTokenizer(bfr.readLine());
+        for (int i=0; i<size; i++){
+            arr[i]= Integer.parseInt(st.nextToken());
+        }
+        int start=0; 
+        int total=0; 
+        int subLen=0;
+        for (int end=0; end<size; end++){
+            total+= arr[end];
+            while(total>key && start<=end){
+                total-=arr[start];
+                start++ ;
+            }
+            if (total<=key && (end-start+1)>subLen){
+                subLen=(end-start+1);
+            }
+        }
+        pw.print(subLen);
+        pw.flush();
+        pw.close();     
+    }
+}
+
+
+
+5.
+Count Numbers
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+
+public class Count{
+    public static int lowerBound(int[] a, int key){
+        int low= 0;
+        int high= a.length;
+        while (low<high){
+            int mid= (low+high)/2;
+            if (a[mid]>=key){
+                high= mid;
+            }
+            else{
+                low= mid+1;
+            }
+        }
+        return low;
+    }
+    public static int upperBound(int[] a, int key){
+        int low= 0;
+        int high= a.length;
+        while (low<high){
+            int mid= (low+high)/2;
+            if (a[mid]>key){
+                high= mid;
+            }
+            else{
+                low= mid+1;
+            }
+        }
+        return high;
+    }
+
+    public static void main (String[] args) throws IOException{
+        InputStreamReader inp= new InputStreamReader(System.in);
+        BufferedReader bfr= new BufferedReader(inp);
+        PrintWriter pw= new PrintWriter(System.out);
+        StringTokenizer st= new StringTokenizer(bfr.readLine());
+        int size= Integer.parseInt(st.nextToken());
+        int test= Integer.parseInt(st.nextToken());
+        int[] arr= new int[size];
+        st= new StringTokenizer(bfr.readLine());
+        for (int i=0; i<size; i++){
+            arr[i]= Integer.parseInt(st.nextToken());
+        }
+        for (int j=0; j<test; j++){
+            st= new StringTokenizer(bfr.readLine());
+            int q1= Integer.parseInt(st.nextToken());
+            int q2= Integer.parseInt(st.nextToken());
+            int start= lowerBound(arr, q1);
+            int end= upperBound(arr, q2);
+            pw.println(end-start);
+        }
+        pw.flush();
+        pw.close();
+    }
+}
+
+
+
+6.
+Longest Distinct SubArray
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class DistinctSub {
+    public static void main (String[] args) throws IOException{
+            InputStreamReader inp= new InputStreamReader(System.in);
+            BufferedReader bfr= new BufferedReader(inp);
+            StringTokenizer st= new StringTokenizer(bfr.readLine());
+            int size= Integer.parseInt(st.nextToken());
+            int dc= Integer.parseInt(st.nextToken());
+            int[] arr1= new int[size];
+            st= new StringTokenizer(bfr.readLine());
+            for (int i=0; i<size; i++){
+                arr1[i]= Integer.parseInt(st.nextToken());
+            }
+            int[] arr2= new int[size+1];
+            int start=0;
+            int dis=0;
+            int max=0;
+            for(int end=0; end<size; end++){
+                if (arr2[arr1[end]]==0){
+                    dis++ ;
+                }
+                arr2[arr1[end]]+=1 ;
+                while (dis>dc){
+                    arr2[arr1[start]]-- ;
+                    if (arr2[arr1[start]]==0){
+                        dis-- ;
+                    }
+                    start++ ;
+                }
+                int len= end-start+1;
+                max= Math.max(max, len);
+            }
+            System.out.println(max);
+    }
+}
+
+
+
+7.
+Can Split Array
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+
+public class SplitArr {
+    public static boolean slt(int[] a, long sum, int l){
+        int count=1;
+        long totalSum=0;
+        for (int i=0; i<a.length; i++){
+            if (totalSum+a[i]<=sum){
+                totalSum+=a[i];
+            }
+            else{
+                totalSum=a[i];
+                count++ ;
+            }
+        }
+        return count<=l ;
+    }
+    public static void main (String[] args) throws IOException{
+            InputStreamReader inp= new InputStreamReader(System.in);
+            BufferedReader bfr= new BufferedReader(inp);
+            PrintWriter pw= new PrintWriter(System.out);
+            StringTokenizer st= new StringTokenizer(bfr.readLine());
+            int size= Integer.parseInt(st.nextToken());
+            int K= Integer.parseInt(st.nextToken());
+            int[] ar= new int[size];
+            long minSum=0;
+            long maxSum=0;
+            st= new StringTokenizer(bfr.readLine());
+            for (int i=0; i<size; i++){
+                ar[i]= Integer.parseInt(st.nextToken());
+                minSum= Math.max (ar[i], minSum);
+                maxSum+=ar[i];
+            }
+            while (minSum<maxSum){
+                long mid= (minSum+maxSum)/2 ;
+                if (slt(ar, mid, K)){
+                    maxSum= mid;
+                }
+                else{
+                    minSum= mid+1;
+                }
+            }
+            pw.print(minSum);
+            pw.flush();
+            pw.close();
+    }           
+}
+
+
+
+8.
+Cut Ropes
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+
+public class Rope {
+    public static void main (String[] args) throws IOException{
+            InputStreamReader inp= new InputStreamReader(System.in);
+            BufferedReader bfr= new BufferedReader(inp);
+            PrintWriter pw= new PrintWriter(System.out);
+            StringTokenizer st= new StringTokenizer(bfr.readLine());
+            int size= Integer.parseInt(st.nextToken());
+            long K= Long.parseLong(st.nextToken());
+            int[] a= new int[size];
+            long min=1;
+            long max=0;
+            long output=-1;
+            st= new StringTokenizer(bfr.readLine());
+            for (int i=0; i<size; i++){
+                a[i]= Integer.parseInt(st.nextToken());
+                max= Math.max (a[i], max);
+            }
+            while (min<=max){
+                long midLen= (min+max)/2;
+                if (cutRope(a, midLen, K)){
+                    output= midLen;
+                    min= midLen+1;
+                }
+                else {
+                    max= midLen-1;
+                }
+            }
+            pw.print(output);
+            pw.flush();
+            pw.close();
+    }
+    public static boolean cutRope(int[] arr, long len, long key){
+        long totalP=0;
+        for (int i=0; i<arr.length; i++){
+            totalP+= (arr[i]/len);
+            if (totalP>=key){
+                return true;
+            }
+        }
+        return false;
+    }
+}
